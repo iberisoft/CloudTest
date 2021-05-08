@@ -1,11 +1,25 @@
 # Cloud Test
 
-## Run on Linux
+## Run on Ubuntu
+
+Update Ubuntu:
 
 ```
 apt update
 apt upgrade
-apt install mosquitto
+```
+
+Install Docker:
+
+```
+apt install docker.io
+```
+
+Install MQTT broker:
+
+```
+docker pull eclipse-mosquitto
+docker run -it -p 1883:1883 -d --restart always --name mosquitto eclipse-mosquitto mosquitto -c /mosquitto-no-auth.conf
 ```
 
 ## Configuring the ESP Board
