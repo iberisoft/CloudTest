@@ -19,7 +19,7 @@ Install MQTT broker:
 
 ```
 docker pull eclipse-mosquitto
-docker run -it -p 1883:1883 -d --restart always --name mosquitto eclipse-mosquitto mosquitto -c /mosquitto-no-auth.conf
+docker run -dit -p 1883:1883 --restart always --name mosquitto eclipse-mosquitto mosquitto -c /mosquitto-no-auth.conf
 ```
 
 ## Configuring the ESP Board
