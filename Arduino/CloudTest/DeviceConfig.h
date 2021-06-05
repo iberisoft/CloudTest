@@ -1,4 +1,2 @@
-String deviceId = "00000";
-String deviceName = "CloudTest_" + deviceId;
-
+const char* deviceNamePrefix = "CloudTest_";
 const int deviceIdle = 1000;

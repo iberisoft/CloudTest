@@ -1,7 +1,8 @@
-#include <WiFiManager.h>
+#include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 #include <ArduinoJson.h>
 #include <FS.h>
+#include <LinkedList.h>
 #include "DeviceConfig.h"
 #include "Settings.h"
 #include "Server.h"
@@ -11,9 +12,12 @@ void setup()
 	Serial.begin(9600);
 	Serial.println();
 
+	loadSettings();
 	setupWiFi();
 	setupServer(receiveData);
 }
+
+uint32_t updateTime = 0;
 
 void loop()
 {
@@ -23,31 +27,17 @@ void loop()
 		// subscribe
 	case 2:
 		pollServer();
-		heartbeat();
+		if (millis() - updateTime > deviceIdle)
+		{
+			updateTime = millis();
+			heartbeat();
+		}
 		break;
 	}
 
 	if (Serial.available())
 	{
 		readCommand();
-	}
-
-	delay(deviceIdle);
-}
-
-void readCommand()
-{
-	String command = Serial.readStringUntil('\n');
-	if (command == "ID")
-	{
-		Serial.print(deviceId);
-		Serial.print('\n');
-		return;
-	}
-	if (command == "RST")
-	{
-		resetWiFi();
-		return;
 	}
 }
 

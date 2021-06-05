@@ -20,14 +20,13 @@ int connectServer()
 	}
 	else
 	{
-		Serial.print("Connecting to ");
-		Serial.print(serverHost);
-		Serial.print(":");
-		Serial.println(serverPort);
-
+		String deviceName = deviceNamePrefix + deviceId;
 		if (client.connect(deviceName.c_str()))
 		{
-			Serial.println("Server connected");
+			if (serverDebug)
+			{
+				Serial.println("Server connected");
+			}
 			return 1;
 		}
 		return 0;
@@ -56,8 +55,11 @@ void subscribeData(String topic)
 	topic = deviceTopic + "/" + topic;
 	client.subscribe(topic.c_str());
 
-	Serial.print("Subscribing to ");
-	Serial.println(topic);
+	if (serverDebug)
+	{
+		Serial.print("Subscribing to ");
+		Serial.println(topic);
+	}
 }
 
 void publishData(String topic, String data)
@@ -65,7 +67,10 @@ void publishData(String topic, String data)
 	topic = deviceTopic + "/" + topic;
 	client.publish(topic.c_str(), data.c_str());
 
-	Serial.print(topic);
-	Serial.print(": ");
-	Serial.println(data);
+	if (serverDebug)
+	{
+		Serial.print(topic);
+		Serial.print(": ");
+		Serial.println(data);
+	}
 }

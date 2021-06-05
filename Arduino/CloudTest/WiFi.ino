@@ -1,51 +1,38 @@
-WiFiManager wifiManager;
-
-bool saveConfig = false;
-
 void setupWiFi()
 {
-	loadSettings();
-
-	char serverHost2[100];
-	serverHost.toCharArray(serverHost2, sizeof(serverHost2));
-	WiFiManagerParameter serverHostParameter("serverHost", "Server Host", serverHost2, sizeof(serverHost2));
-	wifiManager.addParameter(&serverHostParameter);
-
-	char serverPort2[5];
-	String(serverPort).toCharArray(serverPort2, sizeof(serverPort2));
-	WiFiManagerParameter serverPortParameter("serverPort", "Server Port", serverPort2, sizeof(serverPort2));
-	wifiManager.addParameter(&serverPortParameter);
-
-	char topicPrefix2[100];
-	topicPrefix.toCharArray(topicPrefix2, sizeof(topicPrefix2));
-	WiFiManagerParameter topicPrefixParameter("topicPrefix", "Topic Prefix", topicPrefix2, sizeof(topicPrefix2));
-	wifiManager.addParameter(&topicPrefixParameter);
-
-	wifiManager.setSaveConfigCallback(saveConfigCallback);
-	wifiManager.autoConnect(deviceName.c_str());
-
-	if (saveConfig)
+	for (int i = 0; i < networks.size(); ++i)
 	{
-		serverHost = serverHostParameter.getValue();
-		int serverPort2 = String(serverPortParameter.getValue()).toInt();
-		if (serverPort2 != 0)
+		if (setupWiFi(networks[i].Ssid, networks[i].Password))
 		{
-			serverPort = serverPort2;
+			return;
 		}
-		topicPrefix = topicPrefixParameter.getValue();
-
-		saveSettings();
 	}
+
+	WiFi.disconnect();
+	Serial.println("Network not found");
 }
 
-void saveConfigCallback()
+bool setupWiFi(String ssid, String password)
 {
-	saveConfig = true;
-}
+	WiFi.begin(ssid.c_str(), password.c_str());
+	Serial.print("Connecting to ");
+	Serial.print(ssid);
 
-void resetWiFi()
-{
-	wifiManager.resetSettings();
-	delay(1000);
-	wifiManager.reboot();
+	for (int i = 0; i < 20; ++i)
+	{
+		if (WiFi.status() == WL_CONNECTED)
+		{
+			Serial.println("");
+			Serial.println("Network connected");
+			Serial.println("IP address: ");
+			Serial.println(WiFi.localIP());
+			return true;
+		}
+		delay(500);
+		Serial.print(".");
+	}
+
+	Serial.println("");
+	Serial.println("Network failed");
+	return false;
 }
