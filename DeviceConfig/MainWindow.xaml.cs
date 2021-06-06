@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
@@ -19,6 +20,14 @@ namespace DeviceConfig
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Window_Closing(object sender, CancelEventArgs e)
+        {
+            if (!IsEnabled)
+            {
+                e.Cancel = true;
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)

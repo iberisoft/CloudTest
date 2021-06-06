@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Name="Window" Style="{StaticResource WindowStyle}" Title="Configuration" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" MinWidth="300" Closed="Window_Closed">
+        Name="Window" Style="{StaticResource WindowStyle}" Title="Configuration" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" MinWidth="300" Closing="Window_Closing"
+        Closed="Window_Closed">
     <StackPanel>
         <UniformGrid Rows="1">
             <ComboBox Name="PortBox" VerticalAlignment="Center" ItemsSource="{Binding ElementName=Window, Path=PortNames}" SelectedItem="{Binding Source={StaticResource Settings}, Path=PortName}"
