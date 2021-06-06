@@ -51,6 +51,18 @@
                     </ItemsControl>
                 </DockPanel>
             </GroupBox>
+        </StackPanel>
+        <StackPanel IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
+            <GroupBox Header="Firmware">
+                <StackPanel>
+                    <DockPanel>
+                        <Button DockPanel.Dock="Right" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                Content="..." Click="BrowseFirmware" />
+                        <TextBox Text="{Binding Source={StaticResource Settings}, Path=FirmwarePath}" />
+                    </DockPanel>
+                    <Button Content="Upload" Click="UploadFirmware" />
+                </StackPanel>
+            </GroupBox>
             <Button Content="Restart" Click="Restart" />
         </StackPanel>
     </StackPanel>

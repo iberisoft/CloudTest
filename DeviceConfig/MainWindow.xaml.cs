@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
+using System.Diagnostics;
+using System.IO;
 using System.IO.Ports;
 using System.Linq;
 using System.Threading;
@@ -97,6 +100,51 @@ namespace DeviceConfig
                     network.Forget();
                     m_DeviceSettings.Networks = NetworkSettings.Load().ToList();
                 });
+            }
+        }
+
+        private void BrowseFirmware(object sender, RoutedEventArgs e)
+        {
+            var dialog = new OpenFileDialog();
+            dialog.FileName = Properties.Settings.Default.FirmwarePath;
+            if (dialog.ShowDialog() == true)
+            {
+                Properties.Settings.Default.FirmwarePath = dialog.FileName;
+            }
+        }
+
+        private async void UploadFirmware(object sender, RoutedEventArgs e)
+        {
+            if (!File.Exists(Properties.Settings.Default.FirmwarePath))
+            {
+                MessageBox.Show("Firmware not found.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+            var arduinoIdePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Arduino", "arduino_debug.exe");
+            if (!File.Exists(arduinoIdePath))
+            {
+                MessageBox.Show("Arduino IDE not found.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (MessageBox.Show("Upload firmware?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                Process process = null;
+                await DoWork(() =>
+                {
+                    process = Process.Start(arduinoIdePath, $"--upload {Properties.Settings.Default.FirmwarePath} --port {Properties.Settings.Default.PortName}");
+                    process.WaitForExit();
+                });
+                if (process?.ExitCode == 0)
+                {
+                    MessageBox.Show("Firmware uploaded.", Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Arduino IDE failed.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+                DataContext = null;
             }
         }
 
