@@ -44,10 +44,12 @@ void loop()
 	}
 }
 
+uint32_t counter = 0;
+
 void heartbeat()
 {
 	StaticJsonDocument<256> doc;
-	doc["ms"] = millis();
+	doc["counter"] = counter++;
 	String data;
 	serializeJson(doc, data);
 	publishData("heartbeat", data);
