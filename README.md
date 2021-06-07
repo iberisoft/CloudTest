@@ -20,3 +20,9 @@ Install MQTT broker:
 ```
 docker run -dit -p 1883:1883 --restart always --name mosquitto eclipse-mosquitto mosquitto -c /mosquitto-no-auth.conf
 ```
+
+## Firmware Libraries
+
+* [PubSubClient](https://github.com/knolleary/pubsubclient)
+* [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
+* [LinkedList](https://github.com/ivanseidel/LinkedList)
