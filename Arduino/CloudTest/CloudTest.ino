@@ -13,7 +13,10 @@ void setup()
 	Serial.println();
 
 	loadSettings();
-	setupWiFi();
+	if (setupWiFi())
+	{
+		saveSettings();
+	}
 	setupServer(receiveData);
 }
 

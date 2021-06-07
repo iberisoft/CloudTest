@@ -1,15 +1,24 @@
-void setupWiFi()
+bool setupWiFi()
 {
 	for (int i = 0; i < networks.size(); ++i)
 	{
 		if (setupWiFi(networks[i].Ssid, networks[i].Password))
 		{
-			return;
+			if (i > 0)
+			{
+				networks.unshift(networks.remove(i));
+				return true;
+			}
+			else
+			{
+				return false;
+			}
 		}
 	}
 
 	WiFi.disconnect();
 	Serial.println("Network not found");
+	return false;
 }
 
 bool setupWiFi(String ssid, String password)
