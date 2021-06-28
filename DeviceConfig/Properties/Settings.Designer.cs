@@ -38,12 +38,12 @@ namespace DeviceConfig.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string FirmwarePath {
+        public string SketchPath {
             get {
-                return ((string)(this["FirmwarePath"]));
+                return ((string)(this["SketchPath"]));
             }
             set {
-                this["FirmwarePath"] = value;
+                this["SketchPath"] = value;
             }
         }
     }

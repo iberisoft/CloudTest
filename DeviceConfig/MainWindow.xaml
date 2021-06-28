@@ -54,14 +54,14 @@
             </GroupBox>
         </StackPanel>
         <StackPanel IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
-            <GroupBox Header="Firmware">
+            <GroupBox Header="Sketch">
                 <StackPanel>
                     <DockPanel>
                         <Button DockPanel.Dock="Right" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                                Content="..." Click="BrowseFirmware" />
-                        <TextBox Text="{Binding Source={StaticResource Settings}, Path=FirmwarePath}" />
+                                Content="..." Click="BrowseSketch" />
+                        <TextBox Text="{Binding Source={StaticResource Settings}, Path=SketchPath}" />
                     </DockPanel>
-                    <Button Content="Upload" Click="UploadFirmware" />
+                    <Button Content="Upload" Click="UploadSketch" />
                 </StackPanel>
             </GroupBox>
             <Button Content="Restart" Click="Restart" />

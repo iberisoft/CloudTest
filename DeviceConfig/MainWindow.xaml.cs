@@ -112,21 +112,24 @@ namespace DeviceConfig
             }
         }
 
-        private void BrowseFirmware(object sender, RoutedEventArgs e)
+        private void BrowseSketch(object sender, RoutedEventArgs e)
         {
-            var dialog = new OpenFileDialog();
-            dialog.FileName = Properties.Settings.Default.FirmwarePath;
+            var dialog = new OpenFileDialog
+            {
+                Filter = "Sketch Files (*.ino)|*.ino",
+                FileName = Properties.Settings.Default.SketchPath
+            };
             if (dialog.ShowDialog() == true)
             {
-                Properties.Settings.Default.FirmwarePath = dialog.FileName;
+                Properties.Settings.Default.SketchPath = dialog.FileName;
             }
         }
 
-        private async void UploadFirmware(object sender, RoutedEventArgs e)
+        private async void UploadSketch(object sender, RoutedEventArgs e)
         {
-            if (!File.Exists(Properties.Settings.Default.FirmwarePath))
+            if (!File.Exists(Properties.Settings.Default.SketchPath))
             {
-                MessageBox.Show("Firmware not found.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Sketch not found.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
             var arduinoIdePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Arduino", "arduino_debug.exe");
@@ -136,17 +139,17 @@ namespace DeviceConfig
                 return;
             }
 
-            if (MessageBox.Show("Upload firmware?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Upload sketch?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
                 Process process = null;
                 await DoWork(() =>
                 {
-                    process = Process.Start(arduinoIdePath, $"--upload {Properties.Settings.Default.FirmwarePath} --port {Properties.Settings.Default.PortName}");
+                    process = Process.Start(arduinoIdePath, $"--upload {Properties.Settings.Default.SketchPath} --port {Properties.Settings.Default.PortName}");
                     process.WaitForExit();
                 });
                 if (process?.ExitCode == 0)
                 {
-                    MessageBox.Show("Firmware uploaded.", Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                    MessageBox.Show("Sketch uploaded.", Title, MessageBoxButton.OK, MessageBoxImage.Information);
                 }
                 else
                 {
