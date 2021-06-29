@@ -48,11 +48,7 @@ uint32_t counter = 0;
 
 void heartbeat()
 {
-	StaticJsonDocument<256> doc;
-	doc["counter"] = counter++;
-	String data;
-	serializeJson(doc, data);
-	publishData("heartbeat", data);
+	publishData("heartbeat", "counter", counter++);
 }
 
 void receiveData(String topic, String data)
