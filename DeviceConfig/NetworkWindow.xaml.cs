@@ -16,16 +16,7 @@ namespace DeviceConfig
             InitializeComponent();
         }
 
-        public string Ssid
-        {
-            get => SsidBox.Text;
-            set
-            {
-                SsidBox.Text = value;
-                SsidBox.IsEnabled = false;
-                PasswordBox.Focus();
-            }
-        }
+        public string Ssid => SsidBox.Text;
 
         public string Password => PasswordBox.Password;
 

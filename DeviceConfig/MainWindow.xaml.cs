@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -17,9 +16,16 @@ namespace DeviceConfig
     /// </summary>
     public partial class MainWindow : Window
     {
+        readonly SerialPort m_Port = new SerialPort()
+        {
+            ReadTimeout = 3000
+        };
+
         public MainWindow()
         {
             InitializeComponent();
+
+            m_Port.DataReceived += Port_DataReceived;
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -32,6 +38,8 @@ namespace DeviceConfig
 
         private void Window_Closed(object sender, EventArgs e)
         {
+            m_Port.Close();
+
             Properties.Settings.Default.Save();
         }
 
@@ -39,28 +47,47 @@ namespace DeviceConfig
 
         private void PortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            DataContext = null;
+            m_Port.Close();
+            m_Port.PortName = Properties.Settings.Default.PortName;
+            m_Port.Open();
         }
 
-        readonly DeviceSettings m_DeviceSettings = new DeviceSettings();
+        private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            lock (m_Port)
+            {
+                Dispatcher.Invoke(() =>
+                {
+                    LogBox.AppendText(m_Port.ReadExisting());
+                    LogBox.ScrollToEnd();
+                });
+            }
+        }
 
-        private async void LoadContent(object sender, RoutedEventArgs e)
+        private async void LoadSettings(object sender, RoutedEventArgs e)
         {
             await DoWork(() =>
             {
-                m_DeviceSettings.Load();
-                m_DeviceSettings.Networks = NetworkSettings.Load().ToList();
+                lock (m_Port)
+                {
+                    m_Port.EnableServerDebug(false);
+                    Properties.Settings.Default.SettingsText = m_Port.ReadParameter("SS");
+                    m_Port.EnableServerDebug(true);
+                }
             });
-
-            DataContext = m_DeviceSettings;
         }
 
         private async void SaveSettings(object sender, RoutedEventArgs e)
         {
             await DoWork(() =>
             {
-                m_DeviceSettings.Save();
-                m_DeviceSettings.Load();
+                lock (m_Port)
+                {
+                    m_Port.EnableServerDebug(false);
+                    m_Port.WriteParameter("SS", Properties.Settings.Default.SettingsText);
+                    Properties.Settings.Default.SettingsText = m_Port.ReadParameter("SS");
+                    m_Port.EnableServerDebug(true);
+                }
             });
         }
 
@@ -72,42 +99,32 @@ namespace DeviceConfig
             };
             if (window.ShowDialog() == true)
             {
-                var network = new NetworkSettings(window.Ssid);
-                await DoWork(() =>
-                {
-                    network.Save(window.Password);
-                    m_DeviceSettings.Networks = NetworkSettings.Load().ToList();
-                });
+                await AddNetwork(window.Ssid, window.Password);
             }
         }
 
-        private async void SetNetworkPassword(object sender, RoutedEventArgs e)
+        private async Task AddNetwork(string ssid, string password)
         {
-            var window = new NetworkWindow
+            await DoWork(() =>
             {
-                Owner = this
-            };
-            var network = (NetworkSettings)((FrameworkElement)sender).DataContext;
-            window.Ssid = network.Ssid;
-            if (window.ShowDialog() == true)
-            {
-                await DoWork(() =>
+                lock (m_Port)
                 {
-                    network.Save(window.Password);
-                    m_DeviceSettings.Networks = NetworkSettings.Load().ToList();
-                });
-            }
+                    m_Port.EnableServerDebug(false);
+                    m_Port.WriteParameter("NW", $"{ssid}+{password}");
+                    Properties.Settings.Default.SettingsText = m_Port.ReadParameter("SS");
+                    m_Port.EnableServerDebug(true);
+                }
+            });
         }
 
-        private async void ForgetNetwork(object sender, RoutedEventArgs e)
+        private async void RestartDevice(object sender, RoutedEventArgs e)
         {
-            if (MessageBox.Show("Forget?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            if (MessageBox.Show("Restart device?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                var network = (NetworkSettings)((FrameworkElement)sender).DataContext;
                 await DoWork(() =>
                 {
-                    network.Forget();
-                    m_DeviceSettings.Networks = NetworkSettings.Load().ToList();
+                    m_Port.WriteLine("RST");
+                    Thread.Sleep(5000);
                 });
             }
         }
@@ -155,22 +172,6 @@ namespace DeviceConfig
                 {
                     MessageBox.Show("Arduino IDE failed.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-
-                DataContext = null;
-            }
-        }
-
-        private async void Restart(object sender, RoutedEventArgs e)
-        {
-            if (MessageBox.Show("Restart device?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
-            {
-                await DoWork(() =>
-                {
-                    DeviceSettings.Restart();
-                    Thread.Sleep(5000);
-                });
-
-                DataContext = null;
             }
         }
 

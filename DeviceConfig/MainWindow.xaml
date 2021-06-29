@@ -1,70 +1,40 @@
 ﻿<Window x:Class="DeviceConfig.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Name="Window" Style="{StaticResource WindowStyle}" Title="Configuration" WindowStartupLocation="CenterScreen" SizeToContent="WidthAndHeight" MinWidth="300" Closing="Window_Closing"
+        Name="Window" Style="{StaticResource WindowStyle}" Title="Configuration" WindowStartupLocation="CenterScreen" Width="600" Height="600" MinWidth="300" Closing="Window_Closing"
         Closed="Window_Closed">
-    <StackPanel>
-        <UniformGrid Rows="1">
-            <ComboBox Name="PortBox" VerticalAlignment="Center" ItemsSource="{Binding ElementName=Window, Path=PortNames}" SelectedItem="{Binding Source={StaticResource Settings}, Path=PortName}"
-                      SelectionChanged="PortBox_SelectionChanged" />
-            <Button Content="Load" IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" Click="LoadContent" />
-        </UniformGrid>
-        <StackPanel IsEnabled="{Binding Converter={StaticResource NotNullToBoolConverter}}">
-            <GroupBox Header="Settings">
+    <Grid DataContext="{StaticResource Settings}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ComboBox Name="PortBox" Grid.Row="0" HorizontalAlignment="Left" ItemsSource="{Binding ElementName=Window, Path=PortNames}" SelectedItem="{Binding Path=PortName}"
+                  SelectionChanged="PortBox_SelectionChanged" />
+        <GroupBox Grid.Row="1" Header="Settings" IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
+            <StackPanel>
+                <TextBox Text="{Binding Path=SettingsText}" TextWrapping="WrapWithOverflow" />
+                <UniformGrid Rows="2">
+                    <Button Content="Load" Click="LoadSettings" />
+                    <Button Content="Save" Click="SaveSettings" />
+                    <Button Content="Add Network" Click="AddNetwork" />
+                    <Button Content="Restart" Click="RestartDevice" />
+                </UniformGrid>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="2" Header="Sketch" IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
+            <StackPanel>
                 <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Content="Save" Click="SaveSettings" />
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Label Grid.Row="0" Grid.Column="0" Content="Server Host:" />
-                        <TextBox Grid.Row="0" Grid.Column="1" Text="{Binding Path=ServerHost}" />
-                        <Label Grid.Row="1" Grid.Column="0" Content="Server Port:" />
-                        <xctk:IntegerUpDown Grid.Row="1" Grid.Column="1" HorizontalAlignment="Left" Minimum="1" Maximum="65535" Value="{Binding Path=ServerPort}" />
-                        <Label Grid.Row="2" Grid.Column="0" Content="Topic Prefix:" />
-                        <TextBox Grid.Row="2" Grid.Column="1" Text="{Binding Path=TopicPrefix}" />
-                        <Label Grid.Row="3" Grid.Column="0" Content="Device ID:" />
-                        <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding Path=DeviceId}" />
-                    </Grid>
+                    <Button DockPanel.Dock="Right" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" Content="..."
+                            Click="BrowseSketch" />
+                    <TextBox Text="{Binding Path=SketchPath}" />
                 </DockPanel>
-            </GroupBox>
-            <GroupBox Header="Networks">
-                <DockPanel>
-                    <Button DockPanel.Dock="Bottom" Content="Add" Click="AddNetwork" />
-                    <ItemsControl ItemsSource="{Binding Path=Networks}">
-                        <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <UniformGrid Rows="1">
-                                    <TextBlock VerticalAlignment="Center" Text="{Binding Path=Ssid}" />
-                                    <Button Content="Set Password" Click="SetNetworkPassword" />
-                                    <Button Content="Forget" Click="ForgetNetwork" />
-                                </UniformGrid>
-                            </DataTemplate>
-                        </ItemsControl.ItemTemplate>
-                    </ItemsControl>
-                </DockPanel>
-            </GroupBox>
-        </StackPanel>
-        <StackPanel IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
-            <GroupBox Header="Sketch">
-                <StackPanel>
-                    <DockPanel>
-                        <Button DockPanel.Dock="Right" Style="{StaticResource {x:Static ToolBar.ButtonStyleKey}}" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                                Content="..." Click="BrowseSketch" />
-                        <TextBox Text="{Binding Source={StaticResource Settings}, Path=SketchPath}" />
-                    </DockPanel>
-                    <Button Content="Upload" Click="UploadSketch" />
-                </StackPanel>
-            </GroupBox>
-            <Button Content="Restart" Click="Restart" />
-        </StackPanel>
-    </StackPanel>
+                <Button Content="Upload" Click="UploadSketch" />
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Row="3" Header="Log">
+            <TextBox Name="LogBox" VerticalScrollBarVisibility="Visible" />
+        </GroupBox>
+    </Grid>
 </Window>

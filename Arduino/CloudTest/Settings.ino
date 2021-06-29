@@ -63,3 +63,27 @@ void saveSettings()
 	file.close();
 	Serial.println("Saving config file");
 }
+
+String readSettings()
+{
+	if (!SPIFFS.exists(settingsFilePath))
+	{
+		saveSettings();
+	}
+
+	File file = SPIFFS.open(settingsFilePath, "r");
+	String text;
+	while (file.available())
+	{
+		text += (char)file.read();
+	}
+	file.close();
+	return text;
+}
+
+void writeSettings(String text)
+{
+	File file = SPIFFS.open(settingsFilePath, "w");
+	file.print(text);
+	file.close();
+}
