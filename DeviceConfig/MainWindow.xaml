@@ -10,8 +10,10 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ComboBox Name="PortBox" Grid.Row="0" HorizontalAlignment="Left" ItemsSource="{Binding ElementName=Window, Path=PortNames}" SelectedItem="{Binding Path=PortName}"
-                  SelectionChanged="PortBox_SelectionChanged" />
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <Label Content="Port:" />
+            <ComboBox Name="PortBox" ItemsSource="{Binding ElementName=Window, Path=PortNames}" SelectedItem="{Binding Path=PortName}" SelectionChanged="PortBox_SelectionChanged" />
+        </StackPanel>
         <GroupBox Grid.Row="1" Header="Settings" IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
             <StackPanel>
                 <TextBox Text="{Binding Path=SettingsText}" TextWrapping="WrapWithOverflow" />
