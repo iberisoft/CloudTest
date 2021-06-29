@@ -161,8 +161,13 @@ namespace DeviceConfig
                 Process process = null;
                 await DoWork(() =>
                 {
-                    process = Process.Start(arduinoIdePath, $"--upload {Properties.Settings.Default.SketchPath} --port {Properties.Settings.Default.PortName}");
-                    process.WaitForExit();
+                    lock (m_Port)
+                    {
+                        m_Port.Close();
+                        process = Process.Start(arduinoIdePath, $"--upload {Properties.Settings.Default.SketchPath} --port {Properties.Settings.Default.PortName}");
+                        process.WaitForExit();
+                        m_Port.Open();
+                    }
                 });
                 if (process?.ExitCode == 0)
                 {
