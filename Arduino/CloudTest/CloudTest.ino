@@ -20,7 +20,7 @@ void setup()
 	setupServer(receiveData);
 }
 
-uint32_t updateTime = 0;
+uint32_t updateTime = -deviceIdle;
 
 void loop()
 {
@@ -42,13 +42,18 @@ void loop()
 	{
 		readCommand();
 	}
-}
 
-uint32_t counter = 0;
+	if (rtcData.counter > deepSleepStartTime / deviceIdle)
+	{
+		ESP.deepSleep(deviceIdle * 1000);
+	}
+}
 
 void heartbeat()
 {
-	publishData("heartbeat", "counter", counter++);
+	loadRtcData();
+	publishData("heartbeat", "counter", rtcData.counter++);
+	saveRtcData();
 }
 
 void receiveData(String topic, String data)
