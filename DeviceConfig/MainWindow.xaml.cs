@@ -47,9 +47,21 @@ namespace DeviceConfig
 
         private void PortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (Properties.Settings.Default.PortName == null)
+            {
+                return;
+            }
+
             m_Port.Close();
             m_Port.PortName = Properties.Settings.Default.PortName;
-            m_Port.Open();
+            try
+            {
+                m_Port.Open();
+            }
+            catch
+            {
+                Properties.Settings.Default.PortName = null;
+            }
         }
 
         private void Port_DataReceived(object sender, SerialDataReceivedEventArgs e)
