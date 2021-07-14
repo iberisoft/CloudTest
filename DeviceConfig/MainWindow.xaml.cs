@@ -40,27 +40,27 @@ namespace DeviceConfig
         {
             m_Port.Close();
 
-            Properties.Settings.Default.Save();
+            Settings.Default.Save();
         }
 
         public string[] PortNames => SerialPort.GetPortNames();
 
         private void PortBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Properties.Settings.Default.PortName == null)
+            if (Settings.Default.PortName == null)
             {
                 return;
             }
 
             m_Port.Close();
-            m_Port.PortName = Properties.Settings.Default.PortName;
+            m_Port.PortName = Settings.Default.PortName;
             try
             {
                 m_Port.Open();
             }
             catch
             {
-                Properties.Settings.Default.PortName = null;
+                Settings.Default.PortName = null;
             }
         }
 
@@ -83,7 +83,7 @@ namespace DeviceConfig
                 lock (m_Port)
                 {
                     m_Port.EnableServerDebug(false);
-                    Properties.Settings.Default.SettingsText = m_Port.ReadParameter("SS");
+                    Settings.Default.SettingsText = m_Port.ReadParameter("SS");
                     m_Port.EnableServerDebug(true);
                 }
             });
@@ -96,8 +96,8 @@ namespace DeviceConfig
                 lock (m_Port)
                 {
                     m_Port.EnableServerDebug(false);
-                    m_Port.WriteParameter("SS", Properties.Settings.Default.SettingsText);
-                    Properties.Settings.Default.SettingsText = m_Port.ReadParameter("SS");
+                    m_Port.WriteParameter("SS", Settings.Default.SettingsText);
+                    Settings.Default.SettingsText = m_Port.ReadParameter("SS");
                     m_Port.EnableServerDebug(true);
                 }
             });
@@ -123,7 +123,7 @@ namespace DeviceConfig
                 {
                     m_Port.EnableServerDebug(false);
                     m_Port.WriteParameter("NW", $"{ssid}+{password}");
-                    Properties.Settings.Default.SettingsText = m_Port.ReadParameter("SS");
+                    Settings.Default.SettingsText = m_Port.ReadParameter("SS");
                     m_Port.EnableServerDebug(true);
                 }
             });
@@ -146,17 +146,17 @@ namespace DeviceConfig
             var dialog = new OpenFileDialog
             {
                 Filter = "Sketch Files (*.ino)|*.ino",
-                FileName = Properties.Settings.Default.SketchPath
+                FileName = Settings.Default.SketchPath
             };
             if (dialog.ShowDialog() == true)
             {
-                Properties.Settings.Default.SketchPath = dialog.FileName;
+                Settings.Default.SketchPath = dialog.FileName;
             }
         }
 
         private async void UploadSketch(object sender, RoutedEventArgs e)
         {
-            if (!File.Exists(Properties.Settings.Default.SketchPath))
+            if (!File.Exists(Settings.Default.SketchPath))
             {
                 MessageBox.Show("Sketch not found.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -176,7 +176,7 @@ namespace DeviceConfig
                     lock (m_Port)
                     {
                         m_Port.Close();
-                        process = Process.Start(arduinoIdePath, $"--upload {Properties.Settings.Default.SketchPath} --port {Properties.Settings.Default.PortName}");
+                        process = Process.Start(arduinoIdePath, $"--upload {Settings.Default.SketchPath} --port {Settings.Default.PortName}");
                         process.WaitForExit();
                         m_Port.Open();
                     }
