@@ -31,8 +31,8 @@ void loadSettings()
 		for (int i = 0; i < networksJson.size(); ++i)
 		{
 			Network network;
-			network.Ssid = (const char*)networksJson[i]["Ssid"];
-			network.Password = (const char*)networksJson[i]["Password"];
+			network.Ssid = (const char*)networksJson[i]["ssid"];
+			network.Password = (const char*)networksJson[i]["password"];
 			networks.add(network);
 		}
 	}
@@ -54,8 +54,8 @@ void saveSettings()
 	JsonArray networksJson = doc.createNestedArray("networks");
 	for (int i = 0; i < networks.size(); ++i)
 	{
-		networksJson[i]["Ssid"] = networks[i].Ssid;
-		networksJson[i]["Password"] = networks[i].Password;
+		networksJson[i]["ssid"] = networks[i].Ssid;
+		networksJson[i]["password"] = networks[i].Password;
 	}
 
 	File file = SPIFFS.open(settingsFilePath, "w");
