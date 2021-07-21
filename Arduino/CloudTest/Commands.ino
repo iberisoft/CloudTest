@@ -16,41 +16,6 @@ namespace ServerDebugCommand
 	}
 }
 
-namespace NetworkCommand
-{
-	void setNetwork(String ssid, String password)
-	{
-		for (int i = 0; i < networks.size(); ++i)
-		{
-			if (networks[i].Ssid == ssid)
-			{
-				networks[i].Password = password;
-				return;
-			}
-		}
-
-		Network network;
-		network.Ssid = ssid;
-		network.Password = password;
-		networks.add(network);
-	}
-
-	bool read(String command)
-	{
-		if (command.startsWith("NW="))
-		{
-			int i = command.indexOf('+', 3);
-			if (i >= 0)
-			{
-				setNetwork(command.substring(3, i), command.substring(i + 1));
-				saveSettings();
-			}
-			return true;
-		}
-		return false;
-	}
-}
-
 namespace SettingsCommand
 {
 	bool read(String command)
@@ -88,7 +53,6 @@ bool readCommand()
 {
 	String command = Serial.readStringUntil('\n');
 	return ServerDebugCommand::read(command) ||
-		NetworkCommand::read(command) ||
 		SettingsCommand::read(command) ||
 		RestartCommand::read(command);
 }
