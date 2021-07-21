@@ -1,9 +1,13 @@
-﻿using Microsoft.Win32;
+﻿using DeviceConfig.Data;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.IO.Ports;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +20,7 @@ namespace DeviceConfig
     /// </summary>
     public partial class MainWindow : Window
     {
+        readonly AppDbContext m_DbContext = new AppDbContext();
         readonly SerialPort m_Port = new SerialPort()
         {
             ReadTimeout = 3000
@@ -23,6 +28,8 @@ namespace DeviceConfig
 
         public MainWindow()
         {
+            m_DbContext.Database.EnsureCreated();
+
             InitializeComponent();
 
             m_Port.DataReceived += Port_DataReceived;
@@ -76,31 +83,40 @@ namespace DeviceConfig
             }
         }
 
-        private async void LoadSettings(object sender, RoutedEventArgs e)
+        public List<Company> Companies => m_DbContext.Companies.OrderBy(company => company.Name).ToList();
+
+        private Company SelectedCompany => (Company)CompanyBox.SelectedItem;
+
+        private void CompanyBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            await DoWork(() =>
-            {
-                lock (m_Port)
-                {
-                    m_Port.EnableServerDebug(false);
-                    Settings.Default.SettingsText = m_Port.ReadParameter("SS");
-                    m_Port.EnableServerDebug(true);
-                }
-            });
+            UpdateNetworkBox();
         }
 
-        private async void SaveSettings(object sender, RoutedEventArgs e)
+        public List<Network> Networks => SelectedCompany?.Networks.OrderBy(network => network.Ssid).ToList();
+
+        private Network SelectedNetwork => (Network)NetworkBox.SelectedItem;
+
+        private void UpdateNetworkBox() => NetworkBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
+
+        private async void ApplySettings(object sender, RoutedEventArgs e)
         {
+            var settings = JsonConvert.SerializeObject(SelectedCompany.ToDeviceSettings(), Formatting.None);
+            var settings2 = "";
             await DoWork(() =>
             {
                 lock (m_Port)
                 {
                     m_Port.EnableServerDebug(false);
-                    m_Port.WriteParameter("SS", Settings.Default.SettingsText);
-                    Settings.Default.SettingsText = m_Port.ReadParameter("SS");
+                    m_Port.WriteParameter("SS", settings);
+                    settings2 = m_Port.ReadParameter("SS");
                     m_Port.EnableServerDebug(true);
                 }
             });
+            MessageBox.Show(settings == settings2 ? "Done." : "Failed.", Title, MessageBoxButton.OK, MessageBoxImage.Information);
+            //MessageBox.Show(settings2, Title, MessageBoxButton.OK, MessageBoxImage.Information);
+
+            ++SelectedCompany.LastDeviceId;
+            await m_DbContext.SaveChangesAsync();
         }
 
         private async void AddNetwork(object sender, RoutedEventArgs e)
@@ -111,22 +127,21 @@ namespace DeviceConfig
             };
             if (window.ShowDialog() == true)
             {
-                await AddNetwork(window.Ssid, window.Password);
+                var network = new Network { Ssid = window.Ssid, Password = window.Password, Company = SelectedCompany };
+                m_DbContext.Networks.Add(network);
+                await m_DbContext.SaveChangesAsync();
+                UpdateNetworkBox();
             }
         }
 
-        private async Task AddNetwork(string ssid, string password)
+        private async void RemoveNetwork(object sender, RoutedEventArgs e)
         {
-            await DoWork(() =>
+            if (MessageBox.Show("Remove network?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
             {
-                lock (m_Port)
-                {
-                    m_Port.EnableServerDebug(false);
-                    m_Port.WriteParameter("NW", $"{ssid}+{password}");
-                    Settings.Default.SettingsText = m_Port.ReadParameter("SS");
-                    m_Port.EnableServerDebug(true);
-                }
-            });
+                m_DbContext.Networks.Remove(SelectedNetwork);
+                await m_DbContext.SaveChangesAsync();
+                UpdateNetworkBox();
+            }
         }
 
         private async void RestartDevice(object sender, RoutedEventArgs e)

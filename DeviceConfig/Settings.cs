@@ -37,21 +37,6 @@ namespace DeviceConfig
             }
         }
 
-        string m_SettingsText = "";
-
-        public string SettingsText
-        {
-            get => m_SettingsText;
-            set
-            {
-                if (m_SettingsText != value)
-                {
-                    m_SettingsText = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SettingsText)));
-                }
-            }
-        }
-
         static Settings m_Default;
 
         public static Settings Default

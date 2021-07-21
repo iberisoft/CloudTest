@@ -22,6 +22,9 @@
         <Style TargetType="ComboBox">
             <Setter Property="Margin" Value="3" />
         </Style>
+        <Style TargetType="ListBox">
+            <Setter Property="Margin" Value="3" />
+        </Style>
         <Style TargetType="GroupBox">
             <Setter Property="Margin" Value="3" />
         </Style>

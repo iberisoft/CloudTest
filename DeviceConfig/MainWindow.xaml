@@ -16,11 +16,19 @@
         </StackPanel>
         <GroupBox Grid.Row="1" Header="Settings" IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
             <StackPanel>
-                <TextBox Text="{Binding Path=SettingsText}" TextWrapping="WrapWithOverflow" />
-                <UniformGrid Rows="2">
-                    <Button Content="Load" Click="LoadSettings" />
-                    <Button Content="Save" Click="SaveSettings" />
-                    <Button Content="Add Network" Click="AddNetwork" />
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Company:" />
+                    <ComboBox Name="CompanyBox" ItemsSource="{Binding ElementName=Window, Path=Companies}" SelectionChanged="CompanyBox_SelectionChanged" />
+                </StackPanel>
+                <DockPanel IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
+                    <StackPanel DockPanel.Dock="Right">
+                        <Button Content="Add" Click="AddNetwork" />
+                        <Button Content="Remove" Click="RemoveNetwork" IsEnabled="{Binding ElementName=NetworkBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" />
+                    </StackPanel>
+                    <ListBox Name="NetworkBox" ItemsSource="{Binding ElementName=Window, Path=Networks}" />
+                </DockPanel>
+                <UniformGrid Rows="1">
+                    <Button Content="Apply" IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" Click="ApplySettings" />
                     <Button Content="Restart" Click="RestartDevice" />
                 </UniformGrid>
             </StackPanel>
