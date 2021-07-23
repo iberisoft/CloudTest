@@ -10,3 +10,9 @@ struct Network
 };
 
 LinkedList<Network> networks;
+
+struct
+{
+	uint32_t id;
+	uint32_t counter;
+} rtcData;
