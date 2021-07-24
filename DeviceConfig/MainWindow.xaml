@@ -44,7 +44,10 @@
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Row="3" Header="Log">
-            <TextBox Name="LogBox" VerticalScrollBarVisibility="Visible" />
+            <DockPanel>
+                <Button DockPanel.Dock="Bottom" Content="Clear" Click="ClearLog" />
+                <TextBox Name="LogBox" VerticalScrollBarVisibility="Visible" />
+            </DockPanel>
         </GroupBox>
     </Grid>
 </Window>

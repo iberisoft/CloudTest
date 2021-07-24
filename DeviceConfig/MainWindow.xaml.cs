@@ -207,6 +207,11 @@ namespace DeviceConfig
             }
         }
 
+        private void ClearLog(object sender, RoutedEventArgs e)
+        {
+            LogBox.Clear();
+        }
+
         private async Task DoWork(Action action)
         {
             try
