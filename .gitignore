@@ -265,3 +265,6 @@ launchSettings.json
 
 # JavaScript libraries
 */wwwroot/lib/
+
+# Environment variables
+.env
