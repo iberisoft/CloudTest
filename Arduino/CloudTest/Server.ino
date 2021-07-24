@@ -25,7 +25,7 @@ int connectServer()
 		{
 			if (serverDebug)
 			{
-				Serial.println("Server connected");
+				Serial.println("Server " + serverHost + ":" + serverPort + " connected");
 			}
 			return 1;
 		}
