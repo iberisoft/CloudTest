@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31229.75
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataCollector", "DataCollector\DataCollector.csproj", "{7BA94E0C-4182-47C0-BCC1-D2EC56F4704F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataCollector", "DataCollector\DataCollector.csproj", "{7BA94E0C-4182-47C0-BCC1-D2EC56F4704F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MqttHelper", "MqttHelper\MqttHelper\MqttHelper.csproj", "{78B944D6-3158-4E62-ACE9-05A375C07DAA}"
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{19693A32-D6F6-4D14-B885-AF41F6AF076C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{78B944D6-3158-4E62-ACE9-05A375C07DAA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{78B944D6-3158-4E62-ACE9-05A375C07DAA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{78B944D6-3158-4E62-ACE9-05A375C07DAA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{19693A32-D6F6-4D14-B885-AF41F6AF076C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{19693A32-D6F6-4D14-B885-AF41F6AF076C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{19693A32-D6F6-4D14-B885-AF41F6AF076C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{19693A32-D6F6-4D14-B885-AF41F6AF076C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

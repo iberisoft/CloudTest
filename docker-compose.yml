@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+
+  collector:
+    image: ${DOCKER_REGISTRY-}datacollector
+    build:
+      context: .
+      dockerfile: DataCollector/Dockerfile
+    depends_on:
+      - db
+
+  db:
+    image: mongo
+
+  broker:
+    image: eclipse-mosquitto

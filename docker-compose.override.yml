@@ -1,0 +1,17 @@
+version: '3.4'
+
+services:
+
+  collector:
+    environment:
+      - DB_HOST=db
+      - BROKER_HOST=broker
+
+  db:
+    ports:
+      - "27017:27017"
+
+  broker:
+    ports:
+      - "1883:1883"
+    command: mosquitto -c /mosquitto-no-auth.conf
