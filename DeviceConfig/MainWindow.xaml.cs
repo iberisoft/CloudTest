@@ -112,7 +112,7 @@ namespace DeviceConfig
                     m_Port.EnableServerDebug(true);
                 }
             });
-            MessageBox.Show(settings == settings2 ? "Done." : "Failed.", Title, MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(settings == settings2 ? $"Device {SelectedCompany.FullDeviceId} has done." : "Device has failed.", Title, MessageBoxButton.OK, MessageBoxImage.Information);
             //MessageBox.Show(settings2, Title, MessageBoxButton.OK, MessageBoxImage.Information);
 
             ++SelectedCompany.LastDeviceId;

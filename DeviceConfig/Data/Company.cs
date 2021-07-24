@@ -28,6 +28,8 @@ namespace DeviceConfig.Data
 
         public int LastDeviceId { get; set; }
 
+        public string FullDeviceId => $"{Code}{LastDeviceId:d5}";
+
         public virtual ICollection<Network> Networks { get; set; }
 
         public override string ToString() => Name;
@@ -37,7 +39,7 @@ namespace DeviceConfig.Data
             serverHost = ServerHost,
             serverPort = ServerPort,
             topicPrefix = TopicPrefix,
-            deviceId = $"{Code}{LastDeviceId:d5}",
+            deviceId = FullDeviceId,
             networks = Networks.Select(network => network.ToDeviceSettings()).ToList()
         };
     };
