@@ -100,6 +100,11 @@ namespace DeviceConfig
 
         private async void ApplySettings(object sender, RoutedEventArgs e)
         {
+            await ApplySettings();
+        }
+
+        private async Task ApplySettings()
+        {
             var settings = JsonConvert.SerializeObject(SelectedCompany.ToDeviceSettings(), Formatting.None);
             var settings2 = "";
             await DoWork(() =>
@@ -171,16 +176,24 @@ namespace DeviceConfig
 
         private async void UploadSketch(object sender, RoutedEventArgs e)
         {
+            if (await UploadSketch() && Settings.Default.AutoApply && SelectedCompany != null)
+            {
+                await ApplySettings();
+            }
+        }
+
+        private async Task<bool> UploadSketch()
+        {
             if (!File.Exists(Settings.Default.SketchPath))
             {
                 MessageBox.Show("Sketch not found.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
             var arduinoIdePath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86), "Arduino", "arduino_debug.exe");
             if (!File.Exists(arduinoIdePath))
             {
                 MessageBox.Show("Arduino IDE not found.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (MessageBox.Show("Upload sketch?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
@@ -199,12 +212,14 @@ namespace DeviceConfig
                 if (process?.ExitCode == 0)
                 {
                     MessageBox.Show("Sketch uploaded.", Title, MessageBoxButton.OK, MessageBoxImage.Information);
+                    return true;
                 }
                 else
                 {
                     MessageBox.Show("Arduino IDE failed.", Title, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
+            return false;
         }
 
         private void ClearLog(object sender, RoutedEventArgs e)

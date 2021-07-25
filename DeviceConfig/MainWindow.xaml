@@ -40,7 +40,10 @@
                             Click="BrowseSketch" />
                     <TextBox Text="{Binding Path=SketchPath}" />
                 </DockPanel>
-                <Button Content="Upload" Click="UploadSketch" />
+                <UniformGrid Rows="1">
+                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding Path=AutoApply}" Content="Apply Settings" />
+                    <Button Content="Upload" Click="UploadSketch" />
+                </UniformGrid>
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Row="3" Header="Log">
