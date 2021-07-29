@@ -3,6 +3,7 @@
 #include <ArduinoJson.h>
 #include <FS.h>
 #include <LinkedList.h>
+#include <HX711.h>
 #include "DeviceConfig.h"
 #include "Settings.h"
 #include "Server.h"
@@ -34,6 +35,7 @@ void loop()
 		{
 			updateTime = millis();
 			heartbeat();
+			updateScale();
 		}
 		break;
 	}
@@ -55,6 +57,11 @@ void heartbeat()
 	loadRtcData();
 	publishData("heartbeat", "counter", rtcData.counter++);
 	saveRtcData();
+}
+
+void updateScale()
+{
+	publishData("scale", "weight", readScale());
 }
 
 void receiveData(String topic, String data)

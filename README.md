@@ -42,3 +42,4 @@ chmod +x docker-setup.sh
 * [PubSubClient](https://github.com/knolleary/pubsubclient)
 * [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
 * [LinkedList](https://github.com/ivanseidel/LinkedList)
+* [HX711](https://github.com/bogde/HX711)
