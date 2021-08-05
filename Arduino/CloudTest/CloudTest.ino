@@ -36,6 +36,7 @@ void loop()
 			updateTime = millis();
 			heartbeat();
 			updateScale();
+			updateWiFi();
 		}
 		break;
 	}
@@ -62,6 +63,13 @@ void heartbeat()
 void updateScale()
 {
 	publishData("scale", "weight", readScale());
+}
+
+void updateWiFi()
+{
+	StaticJsonDocument<1024> doc;
+	scanWiFi(doc);
+	publishData("wifi", doc);
 }
 
 void receiveData(String topic, String data)

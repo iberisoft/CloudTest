@@ -45,3 +45,14 @@ bool setupWiFi(String ssid, String password)
 	Serial.println("Network failed");
 	return false;
 }
+
+void scanWiFi(JsonDocument& doc)
+{
+	int count = WiFi.scanNetworks();
+	for (int i = 0; i < count; ++i)
+	{
+		doc[i]["ssid"] = WiFi.SSID(i);
+		doc[i]["rssi"] = WiFi.RSSI(i);
+		delay(10);
+	}
+}
