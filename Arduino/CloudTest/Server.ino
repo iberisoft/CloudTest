@@ -34,6 +34,11 @@ int connectServer()
 	}
 }
 
+void disconnectServer()
+{
+	client.disconnect();
+}
+
 void pollServer()
 {
 	client.loop();

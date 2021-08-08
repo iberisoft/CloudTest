@@ -48,7 +48,8 @@ void loop()
 
 	if (rtcData.counter > deepSleepStartTime / deviceIdle)
 	{
-		delay(10);
+		delay(1000);
+		disconnectServer();
 		ESP.deepSleep(deviceIdle * 1000);
 	}
 }
