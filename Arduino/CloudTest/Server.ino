@@ -7,6 +7,7 @@ String deviceTopic;
 void setupServer(ServerCallback callback)
 {
 	client.setServer(serverHost.c_str(), serverPort);
+	client.setBufferSize(512);
 	client.setCallback(_serverCallback);
 	serverCallback = callback;
 	deviceTopic = topicPrefix + "/" + deviceId;
