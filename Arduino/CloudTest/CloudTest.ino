@@ -69,7 +69,8 @@ void updateScale()
 void updateWiFi()
 {
 	StaticJsonDocument<1024> doc;
-	scanWiFi(doc);
+	JsonArray networksJson = doc.createNestedArray("networks");
+	scanWiFi(networksJson);
 	publishData("wifi", doc);
 }
 

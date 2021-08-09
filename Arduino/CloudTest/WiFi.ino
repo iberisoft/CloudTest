@@ -46,13 +46,13 @@ bool setupWiFi(String ssid, String password)
 	return false;
 }
 
-void scanWiFi(JsonDocument& doc)
+void scanWiFi(JsonArray& json)
 {
 	int count = WiFi.scanNetworks();
 	for (int i = 0; i < count; ++i)
 	{
-		doc[i]["ssid"] = WiFi.SSID(i);
-		doc[i]["rssi"] = WiFi.RSSI(i);
+		json[i]["ssid"] = WiFi.SSID(i);
+		json[i]["rssi"] = WiFi.RSSI(i);
 		delay(10);
 	}
 }
