@@ -5,7 +5,7 @@ namespace DataCollector
 {
     class DbContext
     {
-        public DbContext(string host)
+        public DbContext(string connectionString)
         {
             var conventionPack = new ConventionPack
             {
@@ -13,12 +13,7 @@ namespace DataCollector
             };
             ConventionRegistry.Register(nameof(CamelCaseElementNameConvention), conventionPack, _ => true);
 
-            var settings = new MongoClientSettings
-            {
-                Server = new MongoServerAddress(host)
-            };
-            var client = new MongoClient(settings);
-
+            var client = new MongoClient(connectionString);
             var database = client.GetDatabase("collector");
             Messages = database.GetCollection<Message>("messages");
         }

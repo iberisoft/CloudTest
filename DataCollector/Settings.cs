@@ -2,7 +2,7 @@
 {
     class Settings
     {
-        public string DbHost { get; set; }
+        public string DbConnection { get; set; }
 
         public string BrokerHost { get; set; }
 

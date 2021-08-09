@@ -4,12 +4,15 @@ services:
 
   collector:
     environment:
-      - DB_HOST=db
+      - DB_CONNECTION=mongodb://root:${DB_PASSWORD}@db
       - BROKER_HOST=broker
 
   db:
     ports:
       - "27017:27017"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=${DB_PASSWORD}
 
   broker:
     ports:

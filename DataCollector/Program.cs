@@ -15,7 +15,7 @@ namespace DataCollector
             var config = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
             var settings = config.Get<Settings>();
 
-            m_DbContext = new DbContext(Environment.GetEnvironmentVariable("DB_HOST") ?? settings.DbHost);
+            m_DbContext = new DbContext(Environment.GetEnvironmentVariable("DB_CONNECTION") ?? settings.DbConnection);
 
             var netClient = new NetClient(settings.BaseTopic);
             await netClient.StartAsync(Environment.GetEnvironmentVariable("BROKER_HOST") ?? settings.BrokerHost);
