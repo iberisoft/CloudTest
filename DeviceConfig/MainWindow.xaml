@@ -16,10 +16,31 @@
         </StackPanel>
         <GroupBox Grid.Row="1" Header="Settings" IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
             <StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label Content="Company:" />
-                    <ComboBox Name="CompanyBox" ItemsSource="{Binding ElementName=Window, Path=Companies}" SelectionChanged="CompanyBox_SelectionChanged" />
-                </StackPanel>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Company:" />
+                    <ComboBox Name="CompanyBox" Grid.Row="0" Grid.Column="1" ItemsSource="{Binding ElementName=Window, Path=Companies}" SelectionChanged="CompanyBox_SelectionChanged" />
+                    <Label Grid.Row="1" Grid.Column="0" Content="Server Host:" />
+                    <Label Grid.Row="1" Grid.Column="1" Content="{Binding ElementName=CompanyBox, Path=SelectedItem.ServerHost}" />
+                    <Label Grid.Row="2" Grid.Column="0" Content="Server Port:" />
+                    <Label Grid.Row="2" Grid.Column="1" Content="{Binding ElementName=CompanyBox, Path=SelectedItem.ServerPort}" />
+                    <Label Grid.Row="1" Grid.Column="3" Content="Topic Prefix:" />
+                    <Label Grid.Row="1" Grid.Column="4" Content="{Binding ElementName=CompanyBox, Path=SelectedItem.TopicPrefix}" />
+                    <Label Grid.Row="2" Grid.Column="3" Content="Device ID:" />
+                    <Label Grid.Row="2" Grid.Column="4" Content="{Binding ElementName=CompanyBox, Path=SelectedItem.FullDeviceId}" />
+                </Grid>
                 <DockPanel IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
                     <StackPanel DockPanel.Dock="Right">
                         <Button Content="Add Network" Click="AddNetwork" />
