@@ -1,6 +1,8 @@
 # Cloud Test
 
-## Run on Ubuntu
+## Server
+
+### Run on Ubuntu
 
 Update Ubuntu:
 
@@ -37,7 +39,9 @@ chmod +x docker-setup.sh
 ./docker-setup.sh
 ```
 
-## Firmware Libraries
+## ESP8266 Board
+
+### Arduino IDE Libraries
 
 * [PubSubClient](https://github.com/knolleary/pubsubclient)
 * [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
