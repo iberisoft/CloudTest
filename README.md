@@ -1,6 +1,6 @@
 # Cloud Test
 
-## Server
+## Cloud
 
 ### Run on Ubuntu
 
@@ -47,3 +47,10 @@ chmod +x docker-setup.sh
 * [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
 * [LinkedList](https://github.com/ivanseidel/LinkedList)
 * [HX711](https://github.com/bogde/HX711)
+
+## DeviceConfig Application
+
+### Prerequisites
+
+* [NET 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
+* [DB Browser for SQLite](https://sqlitebrowser.org/)
