@@ -19,6 +19,11 @@ void setup()
 		saveSettings();
 	}
 	setupServer(receiveData);
+
+	if (WiFi.status() != WL_CONNECTED)
+	{
+		ESP.deepSleep(deviceIdle * 1000);
+	}
 }
 
 uint32_t updateTime = -deviceIdle;
