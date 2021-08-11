@@ -68,7 +68,10 @@ void heartbeat()
 
 void updateScale()
 {
-	publishData("scale", "weight", readScale());
+	if (hasScale())
+	{
+		publishData("scale", "weight", readScale());
+	}
 }
 
 void updateWiFi()

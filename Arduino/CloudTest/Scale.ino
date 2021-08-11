@@ -6,6 +6,11 @@ void setupScale()
 	scale.set_scale(scaleCalibration);
 }
 
+bool hasScale()
+{
+	return scale.is_ready();
+}
+
 float readScale()
 {
 	return scale.get_units(10);
