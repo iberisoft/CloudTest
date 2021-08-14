@@ -1,6 +1,7 @@
 ﻿<Application x:Class="DeviceConfig.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:xctk="clr-namespace:Xceed.Wpf.Toolkit;assembly=DotNetProjects.Wpf.Extended.Toolkit"
              xmlns:local="clr-namespace:DeviceConfig"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
@@ -30,6 +31,10 @@
         </Style>
         <Style TargetType="GroupBox">
             <Setter Property="Margin" Value="3" />
+        </Style>
+        <Style TargetType="xctk:IntegerUpDown">
+            <Setter Property="Margin" Value="3" />
+            <Setter Property="DisplayDefaultValueOnEmptyText" Value="True" />
         </Style>
     </Application.Resources>
 </Application>

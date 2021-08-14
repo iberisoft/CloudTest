@@ -85,11 +85,62 @@ namespace DeviceConfig
 
         public List<Company> Companies => m_DbContext.Companies.OrderBy(company => company.Name).ToList();
 
-        private Company SelectedCompany => (Company)CompanyBox.SelectedItem;
+        private Company SelectedCompany
+        {
+            get => (Company)CompanyBox.SelectedItem;
+            set => CompanyBox.SelectedItem = value;
+        }
+
+        private void UpdateCompanyBox() => CompanyBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
 
         private void CompanyBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             UpdateNetworkBox();
+        }
+
+        private async void AddCompany(object sender, RoutedEventArgs e)
+        {
+            var window = new CompanyWindow
+            {
+                Owner = this
+            };
+            if (window.ShowDialog() == true)
+            {
+                var company = new Company();
+                window.GetCompany(company);
+                m_DbContext.Companies.Add(company);
+                await m_DbContext.SaveChangesAsync();
+                UpdateCompanyBox();
+                SelectedCompany = company;
+            }
+        }
+
+        private async void EditCompany(object sender, RoutedEventArgs e)
+        {
+            var window = new CompanyWindow
+            {
+                Owner = this
+            };
+            var company = SelectedCompany;
+            window.SetCompany(company);
+            if (window.ShowDialog() == true)
+            {
+                window.GetCompany(company);
+                await m_DbContext.SaveChangesAsync();
+                UpdateCompanyBox();
+                SelectedCompany = null;
+                SelectedCompany = company;
+            }
+        }
+
+        private async void DeleteCompany(object sender, RoutedEventArgs e)
+        {
+            if (MessageBox.Show("Delete company?", Title, MessageBoxButton.YesNo, MessageBoxImage.Question) == MessageBoxResult.Yes)
+            {
+                m_DbContext.Companies.Remove(SelectedCompany);
+                await m_DbContext.SaveChangesAsync();
+                UpdateCompanyBox();
+            }
         }
 
         public List<Network> Networks => SelectedCompany?.Networks.OrderBy(network => network.Ssid).ToList();
