@@ -1,4 +1,5 @@
-﻿using ManagedNativeWifi;
+﻿using DeviceConfig.Data;
+using ManagedNativeWifi;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -16,9 +17,11 @@ namespace DeviceConfig
             InitializeComponent();
         }
 
-        public string Ssid => SsidBox.Text;
-
-        public string Password => PasswordBox.Password;
+        public void GetNetwork(Network network)
+        {
+            network.Ssid = SsidBox.Text;
+            network.Password = PasswordBox.Password;
+        }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
@@ -27,7 +30,7 @@ namespace DeviceConfig
 
         private void Window_Closing(object sender, CancelEventArgs e)
         {
-            if (DialogResult == true && Ssid.Length == 0)
+            if (DialogResult == true && SsidBox.Text.Length == 0)
             {
                 e.Cancel = true;
             }

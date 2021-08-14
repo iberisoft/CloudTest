@@ -132,7 +132,8 @@ namespace DeviceConfig
             };
             if (window.ShowDialog() == true)
             {
-                var network = new Network { Ssid = window.Ssid, Password = window.Password, Company = SelectedCompany };
+                var network = new Network { Company = SelectedCompany };
+                window.GetNetwork(network);
                 m_DbContext.Networks.Add(network);
                 await m_DbContext.SaveChangesAsync();
                 UpdateNetworkBox();
