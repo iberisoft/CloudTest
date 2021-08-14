@@ -44,7 +44,7 @@
                 <DockPanel IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
                     <StackPanel DockPanel.Dock="Right">
                         <Button Content="Add Network" Click="AddNetwork" />
-                        <Button Content="Remove Network" Click="RemoveNetwork" IsEnabled="{Binding ElementName=NetworkBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" />
+                        <Button Content="Remove Network" IsEnabled="{Binding ElementName=NetworkBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" Click="RemoveNetwork" />
                     </StackPanel>
                     <ListBox Name="NetworkBox" ItemsSource="{Binding ElementName=Window, Path=Networks}" />
                 </DockPanel>
