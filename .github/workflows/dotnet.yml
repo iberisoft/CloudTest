@@ -1,0 +1,24 @@
+name: .NET
+
+on:
+  push:
+    paths-ignore:
+      - 'Arduino/**'
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Checkout submodules
+      uses: snickerbockers/submodules-init@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: 5.0.x
+    - name: Build
+      run: |
+        dotnet build DeviceConfig.sln
+        dotnet build DataCollector.sln
