@@ -145,7 +145,11 @@ namespace DeviceConfig
 
         public List<Network> Networks => SelectedCompany?.Networks.OrderBy(network => network.Ssid).ToList();
 
-        private Network SelectedNetwork => (Network)NetworkBox.SelectedItem;
+        private Network SelectedNetwork
+        {
+            get => (Network)NetworkBox.SelectedItem;
+            set => NetworkBox.SelectedItem = value;
+        }
 
         private void UpdateNetworkBox() => NetworkBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
 
@@ -188,6 +192,7 @@ namespace DeviceConfig
                 m_DbContext.Networks.Add(network);
                 await m_DbContext.SaveChangesAsync();
                 UpdateNetworkBox();
+                SelectedNetwork = network;
             }
         }
 
