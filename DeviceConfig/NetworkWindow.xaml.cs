@@ -19,7 +19,7 @@ namespace DeviceConfig
 
         public void GetNetwork(Network network)
         {
-            network.Ssid = SsidBox.Text;
+            network.Ssid = SsidBox.Text.Length > 32 ? SsidBox.Text.Remove(32) : SsidBox.Text;
             network.Password = PasswordBox.Password;
         }
 

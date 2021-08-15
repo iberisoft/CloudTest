@@ -20,7 +20,7 @@
             <Label Grid.Row="0" Grid.Column="0" Content="SSID:" />
             <ComboBox Name="SsidBox" Grid.Row="0" Grid.Column="1" IsEditable="True" />
             <Label Grid.Row="1" Grid.Column="0" Content="Password:" />
-            <PasswordBox Name="PasswordBox" Grid.Row="1" Grid.Column="1" />
+            <PasswordBox Name="PasswordBox" Grid.Row="1" Grid.Column="1" MaxLength="64" />
         </Grid>
     </DockPanel>
 </Window>
