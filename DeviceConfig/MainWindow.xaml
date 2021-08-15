@@ -66,10 +66,7 @@
                             Click="BrowseSketch" />
                     <TextBox Text="{Binding Path=SketchPath}" />
                 </DockPanel>
-                <UniformGrid Rows="1">
-                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding Path=AutoApply}" Content="Apply Settings" />
-                    <Button Content="Upload" Click="UploadSketch" />
-                </UniformGrid>
+                <Button Content="Upload" IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" Click="UploadSketch" />
             </StackPanel>
         </GroupBox>
         <GroupBox Grid.Row="3" Header="Log">

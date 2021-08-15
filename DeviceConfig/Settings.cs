@@ -37,21 +37,6 @@ namespace DeviceConfig
             }
         }
 
-        bool m_AutoApply = true;
-
-        public bool AutoApply
-        {
-            get => m_AutoApply;
-            set
-            {
-                if (m_AutoApply != value)
-                {
-                    m_AutoApply = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(AutoApply)));
-                }
-            }
-        }
-
         static Settings m_Default;
 
         public static Settings Default

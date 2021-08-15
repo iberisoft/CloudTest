@@ -233,7 +233,7 @@ namespace DeviceConfig
 
         private async void UploadSketch(object sender, RoutedEventArgs e)
         {
-            if (await UploadSketch() && Settings.Default.AutoApply && SelectedCompany != null)
+            if (await UploadSketch())
             {
                 await ApplySettings();
             }
