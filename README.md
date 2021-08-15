@@ -53,4 +53,3 @@ chmod +x docker-setup.sh
 ### Prerequisites
 
 * [NET 5.0](https://dotnet.microsoft.com/download/dotnet/5.0)
-* [DB Browser for SQLite](https://sqlitebrowser.org/)
