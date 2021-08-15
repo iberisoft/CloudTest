@@ -6,6 +6,7 @@
              StartupUri="MainWindow.xaml">
     <Application.Resources>
         <ObjectDataProvider x:Key="Settings" ObjectInstance="{x:Static local:Settings.Default}" />
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <local:NotNullToBoolConverter x:Key="NotNullToBoolConverter" />
         <Style x:Key="WindowStyle" TargetType="Window">
             <Setter Property="FontSize" Value="15" />

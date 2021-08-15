@@ -41,19 +41,20 @@
                     <Label Grid.Row="2" Grid.Column="3" Content="Device ID:" />
                     <Label Grid.Row="2" Grid.Column="4" Content="{Binding ElementName=CompanyBox, Path=SelectedItem.FullDeviceId}" />
                 </Grid>
-                <UniformGrid Rows="1">
+                <UniformGrid Rows="1" Visibility="{Binding Path=AdvancedMode, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button Content="Add" Click="AddCompany" />
                     <Button Content="Edit" IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" Click="EditCompany" />
                     <Button Content="Delete" IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" Click="DeleteCompany" />
                 </UniformGrid>
-                <DockPanel IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
+                <DockPanel IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}"
+                           Visibility="{Binding Path=AdvancedMode, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <StackPanel DockPanel.Dock="Right">
                         <Button Content="Add Network" Click="AddNetwork" />
                         <Button Content="Remove Network" IsEnabled="{Binding ElementName=NetworkBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" Click="RemoveNetwork" />
                     </StackPanel>
                     <ListBox Name="NetworkBox" ItemsSource="{Binding ElementName=Window, Path=Networks}" />
                 </DockPanel>
-                <UniformGrid Rows="1">
+                <UniformGrid Rows="1" Visibility="{Binding Path=AdvancedMode, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button Content="Apply" IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" Click="ApplySettings" />
                     <Button Content="Restart" Click="RestartDevice" />
                 </UniformGrid>

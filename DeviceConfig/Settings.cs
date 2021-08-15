@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 
 namespace DeviceConfig
 {
@@ -36,6 +37,8 @@ namespace DeviceConfig
                 }
             }
         }
+
+        public bool AdvancedMode { get; } = Environment.GetCommandLineArgs().Skip(1).Any(arg => arg.ToLower() == "-a");
 
         static Settings m_Default;
 
