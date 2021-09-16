@@ -18,6 +18,7 @@ void setup()
 	{
 		saveSettings();
 	}
+	setupScale();
 	setupServer(receiveData);
 
 	if (WiFi.status() != WL_CONNECTED)
