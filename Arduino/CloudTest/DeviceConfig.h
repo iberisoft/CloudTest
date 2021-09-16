@@ -5,3 +5,4 @@ const int deepSleepStartTime = 300000;
 const int scaleDataPin = D1;
 const int scaleClkPin = D6;
 const float scaleCalibration = 25280;
+const int buttonPin = D7;

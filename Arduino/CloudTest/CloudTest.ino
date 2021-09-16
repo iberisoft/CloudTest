@@ -19,6 +19,7 @@ void setup()
 		saveSettings();
 	}
 	setupScale();
+	setupButton();
 	setupServer(receiveData);
 
 	if (WiFi.status() != WL_CONNECTED)
@@ -42,6 +43,7 @@ void loop()
 			updateTime = millis();
 			heartbeat();
 			updateScale();
+			updateButton();
 			updateWiFi();
 		}
 		break;
@@ -73,6 +75,11 @@ void updateScale()
 	{
 		publishData("scale", "weight", readScale());
 	}
+}
+
+void updateButton()
+{
+	publishData("button", "state", isButtonPressed());
 }
 
 void updateWiFi()
