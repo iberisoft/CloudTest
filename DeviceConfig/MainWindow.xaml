@@ -14,7 +14,7 @@
             <Label Content="Port:" />
             <ComboBox Name="PortBox" ItemsSource="{Binding ElementName=Window, Path=PortNames}" SelectedItem="{Binding Path=PortName}" SelectionChanged="PortBox_SelectionChanged" />
         </StackPanel>
-        <GroupBox Grid.Row="1" Header="Settings" IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}">
+        <GroupBox Grid.Row="1" Header="Settings">
             <StackPanel>
                 <Grid>
                     <Grid.RowDefinitions>
@@ -54,7 +54,8 @@
                     </StackPanel>
                     <ListBox Name="NetworkBox" ItemsSource="{Binding ElementName=Window, Path=Networks}" />
                 </DockPanel>
-                <UniformGrid Rows="1" Visibility="{Binding Path=AdvancedMode, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <UniformGrid Rows="1" IsEnabled="{Binding ElementName=PortBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}"
+                             Visibility="{Binding Path=AdvancedMode, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <Button Content="Apply" IsEnabled="{Binding ElementName=CompanyBox, Path=SelectedItem, Converter={StaticResource NotNullToBoolConverter}}" Click="ApplySettings" />
                     <Button Content="Restart" Click="RestartDevice" />
                 </UniformGrid>
