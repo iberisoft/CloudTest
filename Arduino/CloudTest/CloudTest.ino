@@ -54,7 +54,7 @@ void loop()
 		readCommand();
 	}
 
-	if (rtcData.counter > deepSleepStartTime / deviceIdle)
+	if (rtcData.counter > deepSleepStartCount)
 	{
 		delay(1000);
 		disconnectServer();
