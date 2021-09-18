@@ -1,6 +1,5 @@
 const char* deviceNamePrefix = "CloudTest_";
-const int deviceIdle = 20000;
-const int deepSleepStartCount = 15;
+const int deviceIdle = 5 * 60;
 
 const int scaleDataPin = D1;
 const int scaleClkPin = D6;
