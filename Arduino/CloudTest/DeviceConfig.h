@@ -1,5 +1,5 @@
 const char* deviceNamePrefix = "CloudTest_";
-const int deviceIdle = 5 * 60;
+const int deviceIdle = 60;
 
 const int scaleDataPin = D1;
 const int scaleClkPin = D6;

@@ -24,7 +24,7 @@ void setup()
 
 	if (WiFi.status() != WL_CONNECTED)
 	{
-		deepSleep();
+		deepSleep(deviceIdle);
 	}
 }
 
@@ -35,7 +35,7 @@ void loop()
 	switch (connectServer())
 	{
 	case 1:
-		// subscribe
+		subscribeData("sleep");
 	case 2:
 		pollServer();
 		if (millis() - updateTime > deviceIdle * 1000)
@@ -52,13 +52,6 @@ void loop()
 	if (Serial.available())
 	{
 		readCommand();
-	}
-
-	if (rtcData.counter > 1)
-	{
-		delay(1000);
-		disconnectServer();
-		deepSleep();
 	}
 
 	delay(1);
@@ -94,12 +87,22 @@ void updateWiFi()
 
 void receiveData(String topic, String data)
 {
+	if (topic == "sleep")
+	{
+		StaticJsonDocument<256> doc;
+		deserializeJson(doc, data);
+		int sec = doc["sec"];
+
+		delay(1000);
+		disconnectServer();
+		deepSleep(sec);
+	}
 }
 
-void deepSleep()
+void deepSleep(int sec)
 {
 	Serial.print("Deep sleep for ");
-	Serial.print(deviceIdle);
+	Serial.print(sec);
 	Serial.println(" sec...");
-	ESP.deepSleep(deviceIdle * 1000000);
+	ESP.deepSleep(sec * 1000000);
 }
