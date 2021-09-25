@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Hosting;
 using MongoDB.Bson;
 using MqttHelper;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,13 +34,23 @@ namespace DataCollector
             await m_NetClient.StopAsync();
         }
 
-        private void NetClient_MessageReceived(object sender, NetMessage e)
+        private async void NetClient_MessageReceived(object sender, NetMessage e)
         {
             Console.WriteLine($"{e.Topic}: {e.Payload}");
 
             var tokens = e.Topic.Split('/');
             var message = new Message { DeviceId = tokens[0], Topic = tokens[1], Payload = BsonDocument.Parse(e.Payload) };
             m_DbContext.Messages.InsertOne(message);
+
+            if (message.Topic == "heartbeat")
+            {
+                var sleepPeriod = m_Settings.SleepMode.GetRemainingPeriod();
+                var obj = new JObject
+                {
+                    ["sec"] = (int)sleepPeriod.TotalSeconds
+                };
+                await m_NetClient.PublishAsync(message.DeviceId + "/sleep", obj.ToString());
+            }
         }
     }
 }
