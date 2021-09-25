@@ -5,8 +5,9 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
+ARG GITHUB_PACKAGE_TOKEN
+COPY ["nuget.config", "."]
 COPY ["DataCollector/DataCollector.csproj", "DataCollector/"]
-COPY ["MqttHelper/MqttHelper/MqttHelper.csproj", "MqttHelper/MqttHelper/"]
 RUN dotnet restore "DataCollector/DataCollector.csproj"
 COPY . .
 WORKDIR "/src/DataCollector"

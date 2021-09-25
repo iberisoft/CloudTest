@@ -1,3 +1,0 @@
-[submodule "MqttHelper"]
-	path = MqttHelper
-	url = https://github.com/iberisoft/MqttHelper

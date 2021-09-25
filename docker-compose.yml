@@ -7,6 +7,8 @@ services:
     build:
       context: .
       dockerfile: DataCollector/Dockerfile
+      args:
+        - GITHUB_PACKAGE_TOKEN
     depends_on:
       - db
 
