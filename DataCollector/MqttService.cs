@@ -18,8 +18,8 @@ namespace DataCollector
         public MqttService(Settings settings)
         {
             m_Settings = settings;
-            m_DbContext = new DbContext(Environment.GetEnvironmentVariable("DB_CONNECTION") ?? m_Settings.DbConnection);
-            m_NetClient = new NetClient(m_Settings.BaseTopic);
+            m_DbContext = new(Environment.GetEnvironmentVariable("DB_CONNECTION") ?? m_Settings.DbConnection);
+            m_NetClient = new(m_Settings.BaseTopic);
             m_NetClient.MessageReceived += NetClient_MessageReceived;
         }
 

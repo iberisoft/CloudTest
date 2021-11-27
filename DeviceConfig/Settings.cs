@@ -18,7 +18,7 @@ namespace DeviceConfig
                 if (m_PortName != value)
                 {
                     m_PortName = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(PortName)));
+                    PropertyChanged?.Invoke(this, new(nameof(PortName)));
                 }
             }
         }
@@ -33,7 +33,7 @@ namespace DeviceConfig
                 if (m_SketchPath != value)
                 {
                     m_SketchPath = value;
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(SketchPath)));
+                    PropertyChanged?.Invoke(this, new(nameof(SketchPath)));
                 }
             }
         }
@@ -54,7 +54,7 @@ namespace DeviceConfig
                     }
                     catch
                     {
-                        m_Default = new Settings();
+                        m_Default = new();
                     }
                 }
                 return m_Default;

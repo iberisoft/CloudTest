@@ -20,8 +20,8 @@ namespace DeviceConfig
     /// </summary>
     public partial class MainWindow : Window
     {
-        readonly AppDbContext m_DbContext = new AppDbContext();
-        readonly SerialPort m_Port = new SerialPort()
+        readonly AppDbContext m_DbContext = new();
+        readonly SerialPort m_Port = new()
         {
             ReadTimeout = 3000
         };
